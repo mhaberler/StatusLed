@@ -1,6 +1,6 @@
 {
   "name": "StatusLed",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Non-blocking status LED patterns for ESP32: blink/fade patterns as data, status + one-shot event layers, driven by its own FreeRTOS task. Backends: GPIO, NeoPixel, M5Unified power LED, or your own.",
   "keywords": "led, status, blink, fade, pattern, neopixel, freertos, esp32",
   "authors": [{ "name": "Michael Haberler", "maintainer": true }],
