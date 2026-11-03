@@ -60,6 +60,7 @@ void StatusLed::end() {
   task_ = nullptr;
   vQueueDelete(queue_);
   queue_ = nullptr;
+  requested_ = Pattern{};
 }
 
 void StatusLed::post(const Request &r) {
@@ -71,6 +72,15 @@ void StatusLed::post(const Request &r) {
 }
 
 void StatusLed::setStatus(const Pattern &p) {
+  if (!queue_)
+    return; // not started
+  // de-duplicate here, so calling this on every loop pass doesn't flood the queue
+  portENTER_CRITICAL(&mux_);
+  const bool same = samePattern(p, requested_);
+  requested_ = p;
+  portEXIT_CRITICAL(&mux_);
+  if (same)
+    return;
   Request r{};
   r.op = Op::Status;
   r.pattern = p;

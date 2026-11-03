@@ -87,7 +87,7 @@ All calls except `begin()` / `end()` only post a request to the LED task and ret
 | --- | --- |
 | `bool begin(WriteFn write, void *ctx = nullptr, uint32_t stackSize = 2048, UBaseType_t priority = 1, BaseType_t core = tskNO_AFFINITY)` | Starts the LED task; the LED begins off. `write(rgb, ctx)` is your backend. Returns `false` if already started or out of memory. |
 | `void end()` | Switches the LED off and stops the task (waits for it). |
-| `void setStatus(const Pattern &p)` | Sets the background pattern. If `p` is already the status (same steps, count, repeat), nothing happens, so it's fine to call on every `loop()` pass. |
+| `void setStatus(const Pattern &p)` | Sets the background pattern. Requesting the current status again (same steps, count, repeat) is filtered out in the caller and never reaches the queue, so it's fine to call on every `loop()` pass. Calls before `begin()` are ignored. |
 | `void event(const Pattern &p)` | Plays `p` as a one-shot overlay (`p.repeat` passes; 0 would loop until `clearEvent()`). |
 | `void blink(uint32_t rgb, uint16_t ms, uint8_t times = 1)` | Convenience event: `times` × (`rgb` for `ms`, off for `ms`). The steps are copied. |
 | `void clearEvent()` | Aborts a running event; the status pattern restarts. |

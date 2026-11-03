@@ -114,6 +114,9 @@ private:
   QueueHandle_t queue_ = nullptr;
   TaskHandle_t task_ = nullptr;
   volatile bool running_ = false;
+  // last pattern requested via setStatus() (caller side, for de-duplication)
+  Pattern requested_{};
+  portMUX_TYPE mux_ = portMUX_INITIALIZER_UNLOCKED;
 
   // owned by the LED task
   Layer status_, event_;
